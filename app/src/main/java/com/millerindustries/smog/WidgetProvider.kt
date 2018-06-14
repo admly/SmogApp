@@ -7,9 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
-import android.app.Activity.RESULT_OK
-import android.os.Bundle
-import android.os.Handler
+import com.millerindustries.smog.const.*
+import com.millerindustries.smog.utils.restoreDataStringFromSharedPrefs
 
 
 /**
@@ -34,7 +33,10 @@ class WidgetProvider: AppWidgetProvider(){
 
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.widgetImageView, pendingIntent)
-        views.setImageViewResource(R.id.widgetImageView, getWidgetImageViewByAirQuality(getAirQuality()))
+
+        views.setImageViewResource(R.id.widgetImageView,
+                getWidgetImageViewByAirQuality(context))
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
@@ -46,7 +48,12 @@ class WidgetProvider: AppWidgetProvider(){
         }
     }
 
-    private fun getWidgetImageViewByAirQuality(airQuality: String) : Int{
+    private fun getWidgetImageViewByAirQuality(context: Context) : Int{
+        val airQuality = restoreDataStringFromSharedPrefs(
+                COMMON_SHARED_PREFERENCES,
+                context ,
+                AIR_QUALITY)
+
         when(airQuality){
             GOOD -> return R.mipmap.ic_launcher
             AVERAGE -> return R.mipmap.ahaaa
@@ -58,17 +65,7 @@ class WidgetProvider: AppWidgetProvider(){
         throw IllegalStateException()
     }
 
-    fun setupServiceReceiver() {
-        val receiverForTest = AirQualityResultReceiver(Handler())
-        // This is where we specify what happens when data is received from the service
-        receiverForTest.setReceiver(object : AirQualityResultReceiver.Receiver {
-            override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                if (resultCode == RESULT_OK) {
-                    val resultValue = resultData.getString("resultValue")
-                }
-            }
-        })
-    }
+
 
 
 }

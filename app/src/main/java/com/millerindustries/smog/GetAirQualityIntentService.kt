@@ -2,8 +2,7 @@ package com.millerindustries.smog
 
 import android.app.IntentService
 import android.content.Intent
-import android.app.Activity
-import android.os.Bundle
+import com.millerindustries.smog.const.NO_DATA
 
 
 /**
@@ -14,20 +13,6 @@ import android.os.Bundle
 class GetAirQualityIntentService(val name: String = "GetAirQualityIntentService"): IntentService(name){
     override fun onHandleIntent(intent: Intent?) {
 
-
-        val resultValue = getAirQuality()
-
-
-        // Extract the receiver passed into the service
-        val rec: AirQualityResultReceiver = intent!!.getParcelableExtra("receiver")
-        // Extract additional values from the bundle
-
-
-        // To send a message to the Activity, create a pass a Bundle
-        val bundle = Bundle()
-        bundle.putString("resultValue", "My Result Value. Passed in: $resultValue`")
-        // Here we call send passing a resultCode and the bundle of extras
-        rec.send(Activity.RESULT_OK, bundle)
     }
 
     private fun getAirQuality() : String {

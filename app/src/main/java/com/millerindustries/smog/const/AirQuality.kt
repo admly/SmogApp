@@ -1,4 +1,4 @@
-package com.millerindustries.smog
+package com.millerindustries.smog.const
 
 /**
  * Created by Adam Młynarczyk on 09.04.18.
